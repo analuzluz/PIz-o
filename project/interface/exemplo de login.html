@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Asap:400,700" rel="stylesheet">
+    <meta charset="utf-8" name="viewport" content="width=device-width, user-scalable=no">
+    <title>Login</title>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css?family=Asap:400,700');
+        @import url('https://fonts.googleapis.com/css?family=Lobster');
+            * {
+                    user-select: none;
+                    box-sizing: border-box;
+                    font-family: 'Asap', sans-serif;
+                }
+
+             h1{
+                    width: 90vw;
+                    background-color:white;  
+                    padding: 2vw;
+                    width: 100%;
+                    color: black;
+                    font-size: 1em;
+                   text-align: center;
+            }    
+
+            a{
+                font-family: 'Lobster', cursive;
+                 font-size: 2em;
+            }
+
+            p {
+                text-align: center;
+                font-weight: 400;
+                color: black;
+            }
+
+            button{
+                border-radius: 4px;
+                width: 90vw;
+                background-color:#925A98;
+                border: 1vw;
+                padding: 2vw;
+                margin: 1vw;
+                color: black;
+                font-size: 1em;
+            }
+
+            button.facebook{
+                background-color:#3B5998;
+                color: white;
+            }
+
+            body{
+                background: #A988AC;
+            }
+
+            main {
+                /*height: 72vh;*/
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            div.logo {
+                height: 70vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            main > div {
+                margin-bottom: 10px
+            }
+
+            label {
+                display: inline-flex;
+                width: 50%;
+            }
+
+            input, select {
+                width: 40%  
+            }
+
+
+            input {
+                width:85%;
+                font-size: 6vw;
+                border:none;
+                height: 6vh
+            }
+            div#container{
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+            div.frase{
+                display: flex;
+                align-items: center;
+                justify-content:center;
+                font-family: 'Lobster', cursive;
+                font-size: 1.5em;
+            }
+    </style>
+<body>
+    <header>
+        <h1>
+            <a>+Cult</a>
+        </h1>
+    </header>
+    <div class="logo">
+        <img src="iconefirts.png">
+    </div>
+    <div class="frase">
+            Acesso a cultura na palma da sua mão
+        </div>
+    <main>
+        <div class="primeira">
+            <form class="entrar">
+                 <p><input id="email" type="email" name="email" size="23" placeholder="Email"></p>
+                <p><input id="senha" type="password" name="senha" size="23" placeholder="Senha"></p>
+                <div id="container">
+                    <button class= "login">Entrar</button>    
+                    <button class= "botoes" >Criar novo Cadastro</button>
+                    <button class="facebook">Entrar com Facebook</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+<script language="JavaScript">
+    var frm = document.querySelector('form')
+    var bt = document.querySelector('button')
+
+    frm.addEventListener('submit', evt => evt.preventDefault())
+
+        var domPass = document.querySelector('#senha')
+        var domUser = document.querySelector('#email')
+        document.querySelector("form").addEventListener('submit', async ev => {
+            ev.preventDefault()
+            var req = await fetch(`../api/usuario/logar.php?user=${domUser.value}&password=${domPass.value}`)
+            var res = await req.json()
+            if (res)
+                window.location.href = 'tentativa de pi.html'
+            else
+                alert("errooooo")
+        })
+
+
+</script>
+</html>
+

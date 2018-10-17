@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css?family=Asap:400,700');
+    @import url('https://fonts.googleapis.com/css?family=Lobster');
+    * {
+      user-select: none;
+      box-sizing: border-box;
+      font-family: 'Asap', sans-serif;
+    }
+
+    html {
+      height: 100%
+    }
+
+    h1 {
+      width: 90vw;
+      background-color: white;
+      padding: 2vw;
+      width: 100%;
+      color: black;
+      font-size: 1em;
+    }
+
+    a {
+      font-family: 'Lobster', cursive;
+      font-size: 2em;
+      margin-left: 3.5em
+    }
+
+    button {
+      border-radius: 1px;
+      width: 10vw;
+      background-color: #A988AC;
+      border: 0.5vw;
+      padding: 1vw;
+      margin: 0.5vw;
+      color: black;
+      font-size: 1em;
+    }
+
+    body {
+      height: 100%;
+      margin: 5;
+      padding: 5;
+      background-color: #A988AC;
+
+    }
+
+    form>div {
+      margin-bottom: 10px
+    }
+
+    label {
+      display: inline-flex;
+      width: 50%;
+    }
+
+    input,
+    select {
+      width: 40%
+    }
+
+    button.menu {
+      border-radius: 1px;
+      width: 10vw;
+      background-color: white;
+      border: 0.5vw;
+      padding: 1vw;
+      margin: 0.5vw;
+      font-size: 1em;
+    }
+
+    #mapa {
+      height: 100%
+    }
+  </style>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD081wisWARd1_ix33Zjx5FTEsR5M17oQ"></script>
+  <script type="text/javascript">
+
+    var dados = [
+      { lat: -26.9911, lng: -48.6300 },
+      { lat: -26.9911, lng: -48.6312 },
+      { lat: -26.9000, lng: -48.6352 },
+      { lat: -26.9910, lng: -48.6352 },
+    ]
+
+    function initialize() {
+      var myLatLng = { lat: -26.9911, lng: -48.6352 };
+      var mapOptions = {
+        center: myLatLng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      var map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
+
+      dados.forEach(latLng => {
+        new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: 'Hello World!'
+        });
+      })
+    }
+  </script>
+</head>
+<header>
+  <h1>
+   <button class="menu"><img src="list.png"></button>
+
+    <a>+Cult</a>
+  </h1>
+</header>
+
+<body onload="initialize()">
+  <div id="mapa" style="width:100%; height:60%"></div>
+  <div>
+    <label>Criar um novo evento</label>
+    <button onclick="window.location.href='cadastro de evento.html'" class="moreEvento">+</button>
+  </div>
+  <div>
+    <label>Vizualizar meus eventos</label>
+    <button><img src="..\interface\binoculars.png"></button>
+    <img src="">
+  </div>
+  <div>
+    <label>Minha Agenda</label>
+    <button><img src="..\interface\calendar.png"></button>
+  </div>
+</body>
+<script type="text/javascript">
+      var bt = document.querySelector('button.menu')
+        bt.addEventListener('submit', evt => evt.preventDefault(
+          alert("toma no cu")))
+          
+
+</script>
+
+</html>

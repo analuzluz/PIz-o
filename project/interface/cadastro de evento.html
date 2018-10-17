@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Asap:400,700" rel="stylesheet">
+    <meta charset="utf-8" name="viewport" content="width=device-width, user-scalable=no">
+    <title>Cadastro de evento </title>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css?family=Asap:400,700');
+        @import url('https://fonts.googleapis.com/css?family=Lobster');
+        * {
+            user-select: none;
+            box-sizing: border-box;
+            font-family: 'Asap', sans-serif;
+        }
+
+        body {
+            background: #A988AC;
+        }
+
+        h1 {
+            width: 90vw;
+            background-color: white;
+
+            padding: 2vw;
+            width: 100%;
+            color: black;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        a {
+            font-family: 'Lobster', cursive;
+            font-size: 2em;
+        }
+
+        button.moreEvento {
+            border-radius: 4px;
+            width: 95vw;
+            background-color: #925A98;
+            border: 1vw;
+            padding: 2vw;
+            margin: 1vw 0;
+            color: black;
+            font-size: 1em;
+        }
+
+        button {
+            cursor: none;
+            border: 0;
+            background-color: #925A98;
+        }
+
+        form>div {
+            margin-bottom: 10px
+        }
+
+        label {
+            display: inline-flex;
+            width: 50%;
+        }
+
+        input,
+        select {
+            width: 40%
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>
+            <a>+Cult</a>
+        </h1>
+    </header>
+    <form>
+        <div>
+            <label for="nome">Nome do evento:</label>
+            <input type="text" name="nome" />
+        </div>
+        <div>
+            <label for="tipo do evento">Tipo do evento:</label>
+            <select name="tipoEve">
+                <option valeu=""></option>
+            </select>
+        </div>
+        <div>
+            <label for="indicacao">Classificação indicativa:</label>
+            <select name="Classind">
+                <option value="Classind"></option>
+            </select>
+        </div>
+        <div class="telefone">
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" />
+        </div>
+        <div>
+             <label for="logradoro">Logradoro:</label>
+            <input type="text" name="logradoro" />
+        </div>
+        <div>
+             <label for="numero">Número:</label>
+            <input type="text" name="numero" />
+        </div>
+        <div>
+            <label for="cidade">Cidade:</label>
+            <select name="cidade">
+                <option value="">--- aguarde carregando ---</option>
+            </select>
+        </div>
+        <div>
+            <label for="descricao">Descrição do evento:</label>
+            <input type="text" name="descricao">
+        </div>
+    </form>
+    <div>
+        <button class="moreEvento">Criar evento</button>
+    </div>
+    <script language="JavaScript">
+    var frm = document.querySelector('form')
+    var bt = document.querySelector('button')
+
+    frm.addEventListener('submit', evt => evt.preventDefault())
+    
+    async function loadTipo() {
+        var domTipo = document.querySelector('[name=tipoEve]')
+        var requisicao = await fetch("../api/eventos/listareventos.php")
+        var resposta = await requisicao.json()
+        domTipo.innerHTML = ""
+        resposta.forEach(tipoEve => {
+            domTipo.innerHTML += `<option value='${tipoEve.id_tipo_evento}'>${tipoEve.categoria}</option>`        
+        })
+    }
+
+    loadTipo()
+
+    async function loadIdade() {
+        var domIdade = document.querySelector('[name=Classind]')
+        var requisicao = await fetch("../api/eventos/listaridades.php")
+        var resposta = await requisicao.json()
+        domIdade.innerHTML = ""
+        resposta.forEach(Classind => {
+            domIdade.innerHTML += `<option value='${Classind.id_classificacao_idade}'>${Classind.idade}</option>`        
+        })
+    }
+
+    loadIdade()
+
+    async function loadCidades() {
+        var domCidade = document.querySelector('[name=cidade]')
+        var requisicao = await fetch("../api/eventos/listarcidades.php")
+        var resposta = await requisicao.json()
+        domCidade.innerHTML = ""
+        resposta.forEach(cidade => {
+            domCidade.innerHTML += `<option value='${cidade.id_cidade}'>${cidade.nome_cidade}</option>`        
+        })
+    }
+
+    loadCidades()
+
+    bt.addEventListener('click', async evt => {
+        var formData = new FormData(frm);
+        for(let a of formData) {
+            console.log(a)
+        }
+
+        var requisicao = await fetch("../api/eventos/cadastro.php", {
+            method: "POST",
+            body: formData
+        })
+
+        var resposta = await requisicao.text()
+
+        window.location.href = 'tentativa de pi.html'
+    })
+</script>
+
+</body>
+
+</html>
