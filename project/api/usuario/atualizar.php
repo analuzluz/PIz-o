@@ -14,32 +14,6 @@ if(!is_object($objRecebido))
 
 // ---------------------------------------------------------------------------------------
 
-if(!property_exists($objRecebido,'nome') || empty($objRecebido->nome))
-	$mensagemDeErro[] ="nome não pode ser vazio";
-
-if(!property_exists($objRecebido,'email') || empty($objRecebido->email))
-	$mensagemDeErro[] ="email não pode ser vazio";
-
-if(!property_exists($objRecebido,'senha') || empty($objRecebido->senha))
-	$mensagemDeErro[] ="senha não pode ser vazio";
-
-if(!property_exists($objRecebido,'confirmarsenha') || empty($objRecebido->confirmarsenha))
-	$mensagemDeErro[] ="confirmação de senha não pode ser vazio";
-
-if($objRecebido->confirmarsenha !== $objRecebido->senha)
-	$mensagemDeErro[] ="senha e confirmação não são as mesmas";
-
-if(!property_exists($objRecebido,'telefone') || empty($objRecebido->telefone))
-	$mensagemDeErro[] ="telefone não pode ser vazio";
-
-if(!property_exists($objRecebido,'endereco') || empty($objRecebido->endereco))
-	$mensagemDeErro[] ="endereco não pode ser vazio";
-
-if(!property_exists($objRecebido,'dataNasc') || empty($objRecebido->dataNasc))
-	$mensagemDeErro[] ="data não pode ser vazio";
-
-// ---------------------------------------------------------------------------------------
-
 if(!empty($mensagemDeErro))
 	die(implode("\n",$mensagemDeErro)); 
 

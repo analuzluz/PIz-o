@@ -31,27 +31,12 @@
       margin-left: 3.5em
     }
 
-    button {
-      border-radius: 1px;
-      width: 10vw;
-      background-color: #A988AC;
-      border: 0.5vw;
-      padding: 1vw;
-      margin: 0.5vw;
-      color: black;
-      font-size: 1em;
-    }
-
     body {
-      height: 100%;
+      height: 100vh;
       margin: 5;
       padding: 5;
       background-color: #A988AC;
 
-    }
-
-    form>div {
-      margin-bottom: 10px
     }
 
     label {
@@ -62,6 +47,10 @@
     input,
     select {
       width: 40%
+    }
+    img{
+      width: 100%
+      height :100%;
     }
 
     button.menu {
@@ -75,18 +64,73 @@
     }
 
     #mapa {
-      height: 100%
+      height: 80%;
     }
+    .dropdown {
+    height: 10vh;
+    width: 100%;
+  }
+  .menu {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    color: #0B6138;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  #myDropdown{
+    display:flex;
+    flex-direction: column;
+
+  }
+
+
+  .menu:hover, .menu:focus {
+    background-color: white;
+  }
+  .dropdown {
+
+    position: relative;
+    display: inline-block;
+  }
+  .dropdown-content {
+    width: 100%;
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .menu, .dropdown-content a {
+     width: 100%;
+    font-size: 15px;
+    font-family: 'Roboto';
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .dropdown-content a {
+    width: 100%;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+    color: black;
+    height:33%;
+    text-decoration: none;
+    
+  }
+  .show {display:block;
+  }
+  
   </style>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD081wisWARd1_ix33Zjx5FTEsR5M17oQ"></script>
-  <script type="text/javascript">
+  <script async defer type="text/javascript">
+    var map
+    var arr = []
 
-    var dados = [
-      { lat: -26.9911, lng: -48.6300 },
-      { lat: -26.9911, lng: -48.6312 },
-      { lat: -26.9000, lng: -48.6352 },
-      { lat: -26.9910, lng: -48.6352 },
-    ]
 
     function initialize() {
       var myLatLng = { lat: -26.9911, lng: -48.6352 };
@@ -96,48 +140,90 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
-      var map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
+      map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
 
-      dados.forEach(latLng => {
-        new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: 'Hello World!'
-        });
-      })
     }
+    //---------------------------------------------------------------------------------
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+      if (!event.target.matches('.menu2')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+    //-------------------------------------------------------------------------
+    async function loadEndereco() {
+        var requisicao = await fetch("../api/eventos/listarendereco.php")
+        var resposta = await requisicao.json()
+        // console.log(resposta)
+        var geocoder = new google.maps.Geocoder()
+        resposta.forEach(element => {
+            geocoder.geocode({ 'address':`${evento.logradoro},${evento.numero},${evento.nome_cidade}- SC` }, function(status, results){
+              console.log(results[0].geometry.location, results[0].geometry.location)
+              if (status === 'OK') {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                  map: map,
+                  position: results[0].geometry.location
+                });
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+            })
+          })
+           }   
+    loadEndereco()
+
+
   </script>
 </head>
 <header>
-  <h1>
-   <button class="menu"><img src="list.png"></button>
-
+  <h1 class="dropdown">
+   <button class="menu"><img src="list.png" onclick="myFunction()" class="menu2"></button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="perfil do usuario.html">Minha Página</a>
+      <a href="buscarEVENTOSusuario.php">Meus eventos</a>
+      <a class="sair" >Sair</a>
+      <a href="cadastro de evento.html">Criar novo evento</a>
+    </div>
     <a>+Cult</a>
   </h1>
 </header>
 
 <body onload="initialize()">
-  <div id="mapa" style="width:100%; height:60%"></div>
-  <div>
-    <label>Criar um novo evento</label>
-    <button onclick="window.location.href='cadastro de evento.html'" class="moreEvento">+</button>
+  <div id="mapa" style="width:100%">
   </div>
-  <div>
-    <label>Vizualizar meus eventos</label>
-    <button><img src="..\interface\binoculars.png"></button>
-    <img src="">
-  </div>
-  <div>
-    <label>Minha Agenda</label>
-    <button><img src="..\interface\calendar.png"></button>
-  </div>
-</body>
-<script type="text/javascript">
-      var bt = document.querySelector('button.menu')
-        bt.addEventListener('submit', evt => evt.preventDefault(
-          alert("toma no cu")))
-          
+  
+  <script type="text/javascript">
+    var sair = document.querySelector("a.sair");
+    sair.addEventListener('click', ev => {
+      var req =  fetch(`../api/usuario/logar.php?user=&password=$`);
+      window.location.href = 'exemplo de login.html'
+    });
 
-</script>
+
+    var bt = document.querySelector('button.eventinhos')
+    
+    bt.addEventListener('click', async evt => {
+        
+        var requisicao = await fetch("../api/evento/listareventos_dousuario.php", {
+            method: "POST"
+        })
+
+        var resposta = await requisicao.text()
+        alert("funcionou")
+
+    })
+  </script>
+</body>
 
 </html>
