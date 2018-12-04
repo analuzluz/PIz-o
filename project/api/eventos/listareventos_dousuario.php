@@ -5,15 +5,20 @@ if(!$_SESSION['login']) die("não está logado");
 
 try {
 	$bd = include "../pdo.php";
-	$md = $bd -> prepare("SELECT id_evento, endereco,  FROM evento WHERE id_usuario=:id");
-	$md->execute([
-		"id" => $_SESSION['id']
-	]);
-	$resultado = $md->fetch(PDO::FETCH_ASSOC);
+	print_r($_SESSION);
+	echo '1';
+	$md = $bd -> prepare("SELECT e.id_evento, e.logradoro FROM evento e
+							 INNER JOIN usuario u 
+							 	ON e.usuario_id_usuario = u.id_usuario 
+							 		WHERE u.id_usuario=:id");
+	$md->bindParam('id', $_SESSION['id']);
+	$md->execute();
+	$resultado = $md->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($resultado);
 } catch (Exception $e) {
-     echo "oh meu kirido faz direito e não esquerdo" . $e->getMessage();
+     $arrayName = array('Mensagem', "oh meu kirido faz direito e não esquerdo");  
 }
+	// echo  json_encode($arrayName);
 // $bd:  é conexão com o banco de dados 
 // $md: manipulador de declaração
 

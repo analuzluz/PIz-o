@@ -69,7 +69,7 @@
     .dropdown {
     height: 10vh;
     width: 100%;
-  }
+    }
   .menu {
     height: 100%;
     width: 100%;
@@ -85,8 +85,6 @@
     flex-direction: column;
 
   }
-
-
   .menu:hover, .menu:focus {
     background-color: white;
   }
@@ -97,7 +95,8 @@
   }
   .dropdown-content {
     width: 100%;
-    display: none;
+    visibility: hidden;
+    opacity: 0;
     position: absolute;
     background-color: white;
     min-width: 160px;
@@ -122,7 +121,10 @@
     text-decoration: none;
     
   }
-  .show {display:block;
+
+  .show {
+    visibility: visible;
+    opacity: 1
   }
   
   </style>
@@ -133,43 +135,26 @@
 
 
     function initialize() {
-      var myLatLng = { lat: -26.9911, lng: -48.6352 };
+      var myLatLng = { lat: -26.8877972, lng: -49.3711763};
       var mapOptions = {
         center: myLatLng,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-
       map = new google.maps.Map(document.getElementById("mapa"), mapOptions);
-
-    }
-    //---------------------------------------------------------------------------------
-    function myFunction() {
-      document.getElementById("myDropdown").classList.toggle("show");
-    }
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function(event) {
-      if (!event.target.matches('.menu2')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    }
-    //-------------------------------------------------------------------------
-    async function loadEndereco() {
+      async function loadEndereco() {
         var requisicao = await fetch("../api/eventos/listarendereco.php")
         var resposta = await requisicao.json()
         // console.log(resposta)
         var geocoder = new google.maps.Geocoder()
-        resposta.forEach(element => {
-            geocoder.geocode({ 'address':`${evento.logradoro},${evento.numero},${evento.nome_cidade}- SC` }, function(status, results){
-              console.log(results[0].geometry.location, results[0].geometry.location)
+        resposta.forEach(evento => {
+            var address = `${evento.logradoro}, ${evento.numero}, ${evento.nome_cidade} - SC`
+            // console.log(address)
+            geocoder.geocode({ address }, function (results, status) {
+              // console.log(results)
+              // console.log(results[0].geometry.location, results[0].geometry.location)
               if (status === 'OK') {
+                //console.log(map)
                 map.setCenter(results[0].geometry.location);
                 var marker = new google.maps.Marker({
                   map: map,
@@ -182,8 +167,8 @@
           })
            }   
     loadEndereco()
-
-
+    }
+  
   </script>
 </head>
 <header>
@@ -191,9 +176,8 @@
    <button class="menu"><img src="list.png" onclick="myFunction()" class="menu2"></button>
     <div id="myDropdown" class="dropdown-content">
       <a href="perfil do usuario.html">Minha Página</a>
-      <a href="buscarEVENTOSusuario.php">Meus eventos</a>
-      <a class="sair" >Sair</a>
       <a href="cadastro de evento.html">Criar novo evento</a>
+      <a class="sair" >Sair</a>
     </div>
     <a>+Cult</a>
   </h1>
@@ -210,20 +194,24 @@
       window.location.href = 'exemplo de login.html'
     });
 
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
 
-    var bt = document.querySelector('button.eventinhos')
-    
-    bt.addEventListener('click', async evt => {
-        
-        var requisicao = await fetch("../api/evento/listareventos_dousuario.php", {
-            method: "POST"
-        })
+      if (!event.target.matches('.menu2')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
 
-        var resposta = await requisicao.text()
-        alert("funcionou")
-
-    })
   </script>
 </body>
-
 </html>

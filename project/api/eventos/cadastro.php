@@ -44,8 +44,8 @@ if(!empty($mensagemDeErro))
 try {
 	$bd = include "../pdo.php";
 	$md = $bd -> prepare("
-			INSERT INTO evento(nome_evento , descricao_evento , usuario_id_usuario , tipo_evento_id_tipo_evento , classificacao_idade_id_classificacao_idade , id_cidade , logradoro , numero , telefone) 
-			VALUES            (:nome_evento, :descricao_evento, :usuario_id_usuario, :tipo_evento_id_tipo_evento, :classificacao_idade_id_classificacao_idade, :id_cidade, :logradoro, :numero, :telefone)");
+			INSERT INTO evento(nome_evento , descricao_evento , usuario_id_usuario , tipo_evento_id_tipo_evento , classificacao_idade_id_classificacao_idade , id_cidade , logradoro , numero , telefone, data) 
+			VALUES            (:nome_evento, :descricao_evento, :usuario_id_usuario, :tipo_evento_id_tipo_evento, :classificacao_idade_id_classificacao_idade, :id_cidade, :logradoro, :numero, :telefone, :data)");
 	$md->execute([
 		'nome_evento' => $objRecebido->nome,
 		'tipo_evento_id_tipo_evento' => $objRecebido->tipoEve,
@@ -55,6 +55,7 @@ try {
 		'logradoro' => $objRecebido->logradoro,
 		'numero' => $objRecebido->numero,
 		'usuario_id_usuario' => 1,
+		'data' => $objRecebido ->data,
 		'descricao_evento' => $objRecebido->descricao
 	]);
 
